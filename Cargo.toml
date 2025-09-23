@@ -1,0 +1,16 @@
+[package]
+name = "rustwasm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ndarray = "0.16"
+ndarray-rand = "0.15"
+# rand = "0.8"
+rand_chacha = "0.3"
+# rand_distr = "0.4"
+wasm-bindgen = "0.2"
+getrandom = { version = "0.2", features = ["js"] }
+
+[lib]
+crate-type = ["cdylib", "rlib"]

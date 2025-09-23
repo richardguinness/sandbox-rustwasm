@@ -1,0 +1,22 @@
+html,
+body {
+  width: 900px;
+  margin: 0 auto;
+}
+
+@media (width < 900px) {
+  html,
+  body {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+#canvas1 {
+  border: 1px solid #ccc;
+  display: block;
+  margin: 20px auto;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
