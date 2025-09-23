@@ -133,3 +133,7 @@ if (window.Worker) {
 } else {
   console.log("Your browser doesn't support web workers.");
 }
+
+document.getElementById("terminate-action").addEventListener("click", () => {
+  myWorker.terminate();
+});
