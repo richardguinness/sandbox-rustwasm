@@ -120,3 +120,16 @@ wasm.greet();
 const retrieved_vec = wasm.return_vector();
 console.log(retrieved_vec);
 mnistDisplay.displayDigit(retrieved_vec);
+
+const myWorker = new Worker(new URL("worker.js", import.meta.url));
+
+if (window.Worker) {
+  const result = document.getElementById('worker-result');
+  myWorker.onmessage = (e) => {
+    result.textContent = e.data;
+    console.log("Message received from worker");
+    console.log(result.textContent);
+  };
+} else {
+  console.log("Your browser doesn't support web workers.");
+}
