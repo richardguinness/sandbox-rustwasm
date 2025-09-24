@@ -121,7 +121,8 @@ const retrieved_vec = wasm.return_vector();
 console.log(retrieved_vec);
 mnistDisplay.displayDigit(retrieved_vec);
 
-const myWorker = new Worker(new URL("worker.js", import.meta.url));
+// const myWorker = new Worker(new URL("worker.js", import.meta.url));
+const myWorker = new Worker(new URL("rust_worker.js", import.meta.url), { type: 'module' });
 
 if (window.Worker) {
   const result = document.getElementById('worker-result');

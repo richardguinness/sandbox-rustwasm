@@ -1,4 +1,4 @@
-use ndarray::{arr1, array, Array, Array1};
+use ndarray::{array, Array1};
 use ndarray_rand::rand::SeedableRng;
 use ndarray_rand::rand_distr::Normal;
 use ndarray_rand::RandomExt;
@@ -12,6 +12,8 @@ extern "C" {
 
     #[wasm_bindgen(js_namespace = console)]
     fn log(s: &str);
+
+    fn postMessage(msg: &str);
 }
 
 // Export `greet`
@@ -34,4 +36,20 @@ pub fn return_vector() -> Vec<f64> {
     random_array.to_vec()
     // Array1::random(784, Uniform::new(0, 255));
     // array![127 784].to_vec()
+}
+
+#[wasm_bindgen]
+pub fn loop_with_delay() {
+    let start = js_sys::Date::now();
+    while (js_sys::Date::now() - start) < 3000.0 {
+        // Busy wait for 3 seconds
+    }
+    log("Slept for 3 seconds");
+    postMessage("Slept for a bit");
+    let start = js_sys::Date::now();
+    while (js_sys::Date::now() - start) < 3000.0 {
+        // Busy wait for 3 seconds
+    }
+    log("Slept for 3 seconds");
+    postMessage("Slept for a bit");
 }
