@@ -117,7 +117,7 @@ const mnistDisplay = new MnistCanvas('canvas1', {
 });
 await init();
 wasm.greet();
-const retrieved_vec = wasm.return_vector();
+const retrieved_vec = wasm.generate_random_vector();
 console.log(retrieved_vec);
 mnistDisplay.displayDigit(retrieved_vec);
 
@@ -138,3 +138,14 @@ if (window.Worker) {
 document.getElementById("terminate-action").addEventListener("click", () => {
   myWorker.terminate();
 });
+
+async function saveWeights(weights) {
+  const db = await openDB('ModelStorage', 1);
+  await db.put('weights', {
+    id: 'mnist_model',
+    weights: weights,  // Can store Float32Array directly!
+    timestamp: Date.now()
+  });
+}
+
+

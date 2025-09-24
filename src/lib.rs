@@ -3,6 +3,7 @@ use ndarray_rand::rand::SeedableRng;
 use ndarray_rand::rand_distr::Normal;
 use ndarray_rand::RandomExt;
 use rand_chacha::ChaCha8Rng;
+use std::sync::{LazyLock, Mutex};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -27,7 +28,7 @@ pub fn greet() {
 }
 
 #[wasm_bindgen]
-pub fn return_vector() -> Vec<f64> {
+pub fn generate_random_vector() -> Vec<f64> {
     // Array1::from_elem(784, 32.).to_vec()
     let rng_seed = 42;
     let mut rng = ChaCha8Rng::seed_from_u64(rng_seed);
@@ -36,6 +37,18 @@ pub fn return_vector() -> Vec<f64> {
     random_array.to_vec()
     // Array1::random(784, Uniform::new(0, 255));
     // array![127 784].to_vec()
+}
+
+struct TestModel(Vec<f64>);
+
+static NN: LazyLock<Mutex<TestModel>> = LazyLock::new(|| Mutex::new(TestModel(Vec::new())));
+
+#[wasm_bindgen]
+pub fn load_weights(v: Vec<f64>) {}
+
+#[wasm_bindgen]
+pub fn put_vector(v: Vec<f64>) {
+    NN.lock().unwrap().0 = v;
 }
 
 #[wasm_bindgen]
@@ -52,4 +65,10 @@ pub fn loop_with_delay() {
     }
     log("Slept for 3 seconds");
     postMessage("Slept for a bit");
+    log("Empty vector:");
+    log(&format!("{:?}", &NN.lock().unwrap().0));
+    let v = generate_random_vector();
+    put_vector(v);
+    log("Big random vector:");
+    log(&format!("{:?}", &NN.lock().unwrap().0));
 }
